@@ -5,12 +5,9 @@ using System.Text;
 
 namespace Stealer
 {
-
     public class Spy
     {
-       
-
-
+        // 1st part
         public string StealFieldInfo(string investigateClass,params string[] fields)
         {
             Type type = Type.GetType(investigateClass);
@@ -31,6 +28,7 @@ namespace Stealer
             return sb.ToString().Trim();
         }
 
+        // 2nd part
         public string AnalyzeAccessModifiers()
         {
             Type classType = typeof(Hacker);
@@ -62,13 +60,67 @@ namespace Stealer
 
             return sb.ToString().Trim();
         }
+
+        // 3rd part
+        public string RevealPrivateMethods(string className)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"All Private Methods of Class: {className}");
+
+            Type typeClass = Type.GetType(className);
+
+            sb.AppendLine($"Base Class: {typeClass.BaseType.Name}");
+
+            MethodInfo[] privateMethods = typeClass.GetMethods(BindingFlags.NonPublic|BindingFlags.Instance|BindingFlags.Static);
+
+            foreach (var item in privateMethods)
+            {
+                sb.AppendLine(item.Name);
+            }
+
+
+
+            return sb.ToString().Trim();
+        }
+
+        // 4th part
+        public string CollectGettersAndSetters(string className)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            Type classType = Type.GetType(className);
+
+            MethodInfo[] allMethods = classType.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+
+            foreach (var item in allMethods)
+            {
+                if (item.Name.StartsWith("get"))
+                {
+                    sb.AppendLine($"{item.Name} will return {item.ReturnType}");
+                }
+               
+            }
+            foreach (var item in allMethods)
+            {
+                if (item.Name.StartsWith("set"))
+                {
+                    sb.AppendLine($"{item.Name} will return {item.GetParameters().First().ParameterType}");
+                }
+
+            }
+
+
+
+            return sb.ToString().Trim();
+        }
+        
     }
     public class StartUp
     {
         static void Main(string[] args)
         {
             Spy spy = new Spy();
-            string result = spy.AnalyzeAccessModifiers();
+            string result = spy.CollectGettersAndSetters("Stealer.Hacker");
             Console.WriteLine(result);
 
         }
