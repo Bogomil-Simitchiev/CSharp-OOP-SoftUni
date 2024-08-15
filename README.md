@@ -1,2 +1,2 @@
 # CSharp-OOP-SoftUni
-All exercises for this course
+SoftUni OOP Course - C#
